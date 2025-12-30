@@ -10,8 +10,8 @@ Original file is located at
 
 ## **Información del estudiante**
 ---
-* **Título**:
-* **Autor**:
+* **Título**: NIVELB2_EJERCICIO_FINAL
+* **Autor**: MARIA_CARMONA_MENDIALDUA
 * **Correo**:
 * **Fecha**:
 * **Salida**: ipynb, predicciones.csv
@@ -64,8 +64,6 @@ Los datos están ubicados en la carpeta "data" y constan de los siguientes archi
 Nota: Los datos proporcionados son ficticios y no se corresponden con la realidad de ninguna manera. A continuación, se muestran algunas de las columnas a utilizar por el modelo.
 
 *Por favor, agrega aquellas columnas que faltan y que se encuentran en el archivo InsuranceCompanyABC.csv*
-
-
 
 
 ```python
@@ -475,36 +473,94 @@ La preparación de datos es un paso crucial en el proceso de análisis de datos.
 Comencemos importando los diferentes conjuntos de datos como dataframes utilizando la librería de pandas. Luego, procederemos a presentar los primeros 10 registros.
 """
 
-#Write your code here
+import pandas as pd
 df_retailbank = pd.read_csv("change_path_to_RetailBankEFG")
+df.head(10) #muestra primeras diez filas
 
 """*Realiza la misma acción para InvestmentBankCDE.csv.*"""
 
-#Write your code here
+import pandas as pd
 df_investment = pd.read_csv("change_path_to_InvestmentBankCDE")
+df.heas(10)
 
 """*Realiza la misma acción para InvestmentBankCDE.csv.*"""
 
-#Write your code here
+import pandas as pd
 df_insurance = pd.read_csv("change_path_to_InsuranceCompanyABC")
+df.head(10)
 
 """## Pregunta
 *¿Puedes identificar un atributo común entre los diferentes conjuntos de datos que permita juntarlos?*
 """
+conjunto de datos:
+ID,Idade,Renda,Regiao,Genero,seguro auto,seguro vida Emp,seguro vida PF,Seguro Residencial
+ID,Investimento Fundos_cambiais,Investimento Fundos_commodities,Investimento LCI,Investimento LCA,Investimento Poupanca,Investimento Fundos Multimercado,Investimento Tesouro Direto
+D;Financiamento Casa;Financiamento Carro;Emprestimo _pessoal;Emprestimo _consignado;Emprestimo _limite_especial;Emprestimo _educacao;Emprestimo _viagem;Investimento CDB;Investimento Fundos
+columnas clave(keys)
+ID_
+Inversión_
+Renta_
+Financiación_
+import pandas as pd
+#cargar los datasets
+df_retailbank = pd.read_csv("retailbank.csv")
+df_investment = pd.read_csv("investment.csv")
+df_insurance = pd.read_csv("insurance.csv")
 
-#Write your code here
+#Lista de DataFrames
+dfs = [df_retailbank, df_investment, df_insurance]
 
+#Detectar columnas comunes entre todos los DataFrame
+common_columns = set(dfs[0].columns) for df in dfs[1:]:
+
+common_columns.intersection_uptade(df.columns)
+
+print("Columnas claves comunes:", common_columns)
+
+#Si hay columnas clave, hacemos merge
+if common_columns:
+    #tomamos la primera columna comun como clave principal
+    key_column = list(common_colums)[0]
+
+    #unir todos los DataFrames en base a una columna clave
+    df_merged = dfs[0]
+    for df in dfs[1:]:
+        df_merged = df_merged(df, on=key_column, how='outer'
+
+    print("Dataset combinado:"
+    print(df_merged.head())
+else: 
+    print("No hay columnas clave comunes entre los DataFrame.")     
+
+#merged permite unir DataFrames por columnas comunes
+#on=key_column indica la columna comun para unir
+#how= 'outer'conserva toos los registros auqnue no tengan coincidencia 
+#set(dfs[0].columns) y intersection_update permite encontrar columnas que existen en todos los DataFrames.
 """## Pregunta
 Indica cuál es la cantidad de registros en cada conjunto de datos.
+insurance company = 10083 len(df_insurancecompany)
+invested company = 10083 len(df_investedcompany)
+retail bank = 10084 len(df_retailbank)
 
 *¿Qué conclusiones puedes sacar luego de observar los resultados?*
 """
 
-#Write your code here
-
+#la estructura no esta estandarizada y requiere normalización antes de integrar datos
+id_cliente vs customer_id
+#los dataFrames tienen un tamaño parecido
+#al comparar el número de registros entre los diferentes conjuntos de datos, se observa que no todos los registros tienen conexsión.
+Esto sugiere que hay clientes y cuentas sin asociar y transacciones sin identificacion completa.
+Será necesario normalizat claves, revisar valores faltantes y estandarizar columnas antes de unir las tablas ara obtener una base sólida para el análisis.
+#validar claves
+#limpiar duplicados o nulos
+#preparar el merge final
+    
 """## Pregunta
 ¿Has notado algún patrón entre los datos, ya sea entre filas o columnas?
-
+#patrones relaciones entre columnas
+#patrones de repeticion o frecuencia
+#patrones temporales
+#patrones de comportamiento
 # Evaluación de Calidad de Datos
 
 ## Valores Faltantes:
@@ -522,11 +578,28 @@ def get_nan_values(data_frame):
 """*Imprime los valores faltantes por fila y columna*"""
 
 #Write your code here for df_retailbank
+resumen_nulos_retailbank = pd.DataFrame({"nulos_por_columna": df_retailbank.isna().sum(),
+         "porcentaje nulos(%)"
+(df_retailbank.isna().mean() * 100).round(2)})
+print("n\=== RESUMEN GENERAL RETAILBANK ===")
+print(resumen_nulos_retailbank)
 
 #Write your code here for df_investment
+resumen_nulos_investment = pd.DataFrame({"nulos_por_columna": df_investment.isna().sum(),
+         "porcentaje nulos(%)"
+(df_investment.isna().mean() * 100).round(2)})
+print("n\=== RESUMEN GENERAL INVESTMENT ===")
+print(resumen_nulos_investment)
+
 
 #Write your code here for df_insurance
+resumen_nulos_insurance = pd.DataFrame({"nulos_por_columna": df_insurance.isna().sum(),
+        "porcentaje nulos(%)"
+(df_insurance.isna().mean() * 100).round(2)})
+print("n\=== RESUMEN GENERAL INSURANCE ===")
+print(resumen_nulos_insurance)
 
+#Write your code here
 """## Pregunta
 *¿Existen valores faltantes en los datos?*
 
@@ -556,6 +629,15 @@ def check_duplicates(data_frame, column):
 """*Imprime la cantidad de filas duplicadas para df_retailbank, df_investment y df_insurance*"""
 
 #Write your code here
+#cantidad de filas duplicadas en cada DataFrame
+dup_retailbank = df_retailbank.duplicated().sum()
+dup_investment = df_investment.duplicated().sum()
+dup_insurance = df_insurance.duplicated().sum()
+
+print("=== CANTIDAD DE FILAS DUPLICADAS ===")
+print(f"Retailbank -> {dup_retailbank} filas duplicadas)
+print(f"Investment -> {dup_investment} filas duplicadas)
+print(f"Insurance -> {dup_insurance} filas duplicadas)
 
 """## Pregunta
 ¿Existen datos duplicados?
@@ -567,10 +649,20 @@ En esta sección, se propondrán varios métodos para identificar inconsistencia
 """
 
 #Write your code here for df_retailbank
+duplicados_retailbank = df_retailbank[df_retailbank.duplicated()]
+print(" === DESCRIBE DUPLICADOS RETAILBANK ===")
+print(duplicados_retailbank.describe(include='all'))
 
 #Write your code here for df_investment
+duplicados_investment = df_investment[df_investment.duplicated()]
+#usamos 'describe'
+print(" === DESCRIBE DUPLICADOS INVESTMENT ===")
+print(duplicados_investment.describe(include='all'))
 
 #Write your code here for df_insurance
+duplicados_insurance = df_insurance[df_insurance.duplicated()]
+print(" === DESCRIBE DUPLICADOS INSURANCE ===")
+print(duplicados_insurance.describe(include='all'))
 
 """### Identificar Valores Únicos:
 Ahora, para todas las variables no numéricas, debemos identificar cuántos tipos de datos están registrados en cada columna. Implementaremos la función `get_value_counts_non_numeric_columns`, la cual obtiene los conteos de valores de las columnas no numéricas en un DataFrame y devuelve un diccionario donde las claves son los nombres de las columnas no numéricas y los valores son sus respectivos conteos de valores.
@@ -600,34 +692,86 @@ def get_value_counts_non_numeric_columns(df):
     Returns:
     dict: A dictionary where keys are non-numeric column names and values are their respective value counts.
     """
-    # write your code here
+
+    def find_non_numeric_columns(df: pd.DataFrame) -> list:
+    """
+        Devuelve una lista con los nombres de columnas no numéricas del DataFrame.
+    """
+        non_numeric_cols =
+    df.select_dtypes(exclude=['number']).columns.tolist()
+        return non_numeric_cols
+
+    def get_value_count_no_numeric(df: pd.DataFrame) -> dict:
+    #usamos find_non_numeric_columns para conseguir las columnas no numéricas
+    """
+        non_numeric_cols = find_non_numeric_columns(df)
+        result = {} #nombre de la columna
+
+        for col in non_numeric_cols:
+            result[col] =
+        df[col].value_counts() #valor, series de value counts.
+            return result
+            
     #Get non-numeric columns
     #pass
 
 """*Imprime los conteos de las columnas no numéricas.*"""
 
+def print_value_count_numeric(df: pd.DataFrame):
+     value_counts_dict =
+get_value_count_non_numeric(df)
+    for col, counst in 
+value_counts_dict.items():
+    print(f"\n conteo de valores para la columna '{col}'"
+    print(counts)
+#Ejecutar para df_retailbank
+    print_value_count_non_numeric(df_retailbank)
+    
+    
 #Write your code here for df_retailbank
 get_value_counts_non_numeric_columns(df_retailbank)
+value_counts_retailbank = 
+get_value_count_non_numeric(df_retailbank)
 
 #Write your code here for df_investment
 get_value_counts_non_numeric_columns(df_investment)
+value_counts_investment = 
+get_value_count_non_numeric(df_investment)
 
 #Write your code here for df_insurance
 get_value_counts_non_numeric_columns(df_insurance)
+value_counts_insurance = 
+get_value_count_non_numeric(df_insurance)
+
 
 """### Verificar Tipos de Datos:
 *Utiliza el atributo `dtypes` para verificar los tipos de datos de cada columna.*
 """
 
 #Write your code here for df_retailbank
+print("Tipos de datos de df_retailbank.")
+print(df_retailbank.dtypes)
 
 #Write your code here for df_investment
+print("Tipos de datos de df_investment.")
+print(df_investment.dtypes)
 
 #Write your code here for df_insurance
+print("Tipos de datos de df_insurance.")
+print(df_insurance.dtypes)
 
 """## Pregunta
 *¿Qué puedes concluir respecto de todas las variables que no son numéricas?*
+Estas varibables no contienen númericos por lo que no podemos hacer operaciones
+matemáticas directamente. Suelen representar nombres, direcciones, género, tipos
+de productos, etc..
+Pueden ser valores repetidos, así como contenter valores faltantes(NaN)
+Por último comentar que estas variables no númericas ayudan a identificar
+categorías más comunes.
 *¿Has identificado algún patrón o característica?*
+Sí, vemos una repeteción de categorías frecuentes como 
+inversiones, tipo de producto, ,renta. Esto se puede relacionarse con 
+comportamiento financiero o patrones de inversión
 
 ## Visualización General de los datos y Analizar Patrones Anómalos
 Esta es una sección libre en la que podrás crear diferentes visualizaciones de los datos. Sugiero que utilices principalmente visualizaciones para validar la cantidad de datos de las variables no numéricas. Además, debes realizar gráficas tipo box plot para las columnas numéricas, exceptuando la columna ID.
@@ -635,38 +779,162 @@ Esta es una sección libre en la que podrás crear diferentes visualizaciones de
 ## Por ejemplo:
 ### Visualizaciones para variables no numéricas:
 - **Gráfico de barras:** Utiliza un gráfico de barras para visualizar la cantidad de datos únicos en cada variable no numérica.
+#usamos un df como nomnre del DataFrame
+#identificamos columnas no numéricas
+non_numeric_cols = df.select_types(exclude= ['int100', 'float100']).columns
+
+#contamos la cantidad de valores unicos en cada columna no numérica
+unique_counts = {col: df[col].unique() 
+    for col in non_numeric_cols}
+
+#convertir a DataFrame para graficar
+unique_count_df = pd.DataFrame(list(unique_counts.items()),
+colums= ['Varibel', 'UniqueCount'])
+
+#Grafico de barras
+plt.figure(figsize(100, 10))
+sns.parplot(data=unique_counts_df, 
+x= 'Variable', y= 'Uniquecount')
+plt.titlle('Cantidad de datos unicos por variable no numerica')
+plt.ylabel('Numero de valores únicos')
+plt.ylabel('Variable')
+ple.show()
+
+
+
 - **Gráfico de pastel:** Muestra la distribución de los datos en cada variable no numérica utilizando un gráfico de pastel.
+for col in non_numeric_cols:
+    counts = df[col].value_counts()
+
+    plt.figure(figsize=(100, 10))
+    plt.pie(counts, labels=count.index, #plt pie()genera el gráfico pas
+    autopoct= '%1.1f%%,  
+    colors=plt.cmt.tab20.colors)
+    plt.tittle(f'Distribución de {col}")
+    plt.show()
+    #plt pie() genera el gráfico pastel
+    # autopoct='%1.1f%%' muestra los porcentajes de cada categoría
+
 
 ### Box plots para columnas numéricas:
 - **Box plot para cada columna numérica (excluyendo la columna ID):** Utiliza box plots para visualizar la distribución de los datos, los valores atípicos y la mediana en cada columna numérica.
 """
 
 #Write your code here, add your custom plots for df_retailbank
-
+#df_retailbank data cargado
+#df_retainbank = pd.read_csv("ruta/archivo_retailbank.csv"
+#seleccionamos columnas numércias exluyendo ID.
+num_col =
+df_retailbank.select_dtypes(include=['number'])-columns.tolist()
+if 'ID' in num_cols:
+    num_cols.remove('ID')
+#crear boxplot individuales para cada columna
+plt.figure(fisgsize=100, 10)
+for i col in enumerate(num_cols, 1)
+    plt.subplot(1, len(num_cols), i)
+    sns.bloxplot(y=df_retailbank[col], color="pink")
+    plt.tittle()
+    plt.ylabel()
+    plt.xlabel()
+    
+    
 #Write your code here, add your custom plots for df_investment
+num_col =
+df_investment.select_dtypes(include=['number'])-columns.tolist()
+if 'ID' in num_cols:
+    num_cols.remove('ID')
+#crear boxplot individuales para cada columna
+plt.figure(fisgsize=100, 10)
+for i col in enumerate(num_cols, 1)
+    plt.subplot(1, len(num_cols), i)
+    sns.bloxplot(y=df_investment[col], color="blue")
+    plt.tittle()
+    plt.ylabel()
+    plt.xlabel()
+    
 
 #Write your code here, add your custom plots for df_insurance
+num_col =
+df_insurance.select_dtypes(include=['number'])-columns.tolist()
+if 'ID' in num_cols:
+    num_cols.remove('ID')
+#crear boxplot individuales para cada columna
+plt.figure(fisgsize=100, 10)
+for i col in enumerate(num_cols, 1)
+    plt.subplot(1, len(num_cols), i)
+    sns.bloxplot(y=df_insurance[col], color="red")
+    plt.tittle()
+    plt.ylabel()
+    plt.xlabel()
+    
+
 
 """## Preguntas
 1. *¿Cuál de las dos opciones sugieres utilizar para evaluar datos no numéricos: imprimir los valores o crear visualizaciones?*
+Para poder evaluar datos no numéricos utilizaremos imprimir los valores o crear visualizaciones depende de nuestras necesidades, 
+dependiendo del tamaño de nuestra data set y/o nuestro objetivo.
+Si optamos por imprimir los valores es útil para una exploración inicial, deteecta categorias y valores faltantes. 
+La desventaja es que no automatiza la limpieza de los datos.
+Por otro lado, si escogemos la visualización de datos esta nos permite comparar rápidamente distintos datasets.
+Además facilita la detección de patrones y probelmas en los datos en los análisis más avanzados.
+Por último visualiza distribuciones y valores atípicos.
+
+
 2. *¿Qué otros tipos de visualizaciones se te ocurren que podrías sugerir? Justifica tu respuesta.*
+Existen muchos tipos de visualizaciones que puedes aplicar según el tipo de variable(numérica o no numérica)
+y el tipo de análisis que quieras realizar(comparar, explorar, detectar anomalías, etc..
+Bar Plor(gráfico de barras), categorías con recuentos(dominantes o desbalanceadas)
+Pie Chart(gráfico de pastel), proporciones simples, pocos valores(distribución porcentual rápida)
+Countplot(Seaborn), frecuencia de cada categoría(valores más comunes y raros)
+
 3. *¿Existe un desbalance en los datos, es decir, existen más tipos que corresponden a una clase? ¿Cuál es la clase y cómo crees que esto puede afectar al construir modelos de machine learning?*
+Puede existir un desbalance en los datos, es decir, que una clase aparezca mucho más que otra, puede ser que unas categorias puedan tener muchas observaciones y otras ninguna.
+Por ello, debemos hacer un rembalanceo para poder corregirlo utilizando por ejemplo, Oversampling(aumentar clase minoritaria , Undersampling(reducir clase mayoritaria) o mezcla de ellos.
+Por último comentar que este desblance sí afecta al Machine Learning, causando problemas como modelo sesgado, alta precisión engañosa, menos capacidad de generalización, mal desempeño en la clase importante.
 
 ### Analizar Patrones Anómalos:
 Para realizar el análisis de patrones anómalos, utilizarás la función `plot_boxplot_violinplot`.
+#detectar outliers, sesgos y distribuciones irregulares en columnas numéricas.
+def plot_boxplot_violinplot(df, tittle= "Análisis de patrones anómalos"):
+    #Selección de columnas numéricas 
+    num_cols = df.select_dtypes(include=['number']).columns.tolist()
+    for col in num_cols:
+        fig. axes = plt.subplot(1, 2, figsize(100, 10))
+    #  Bloxplot para detectar outliers
+        sns.bloxplot(y=df[col], ax=axes[0], color="pink")
+        axes[0].set_titlle(f"Bloxplot{col}")
+    #Violimplot para analizar densidad y forma
+        sns.violimplot(y=df[col], ax=axes[1], color="blue")
+        axes[1].set_tittle(f"Violin_plot{col}")
+        fig.suptitle(f"{tittle}: {col}",fontsize= 50)
+        plt.tight_layout()
+        plt.show()
+
 
 *Graficar la región(Regiao) en función de la edad(Idade), del conjunto de datos `df_insurance`.*
 """
+#suponiendo que df_insurance_data ya esta cargado
+plt.figue(figsize=(100,10))
+sns.bloxplot(x='region?, y='age', data=df_insurance)
+plt.tittle("Distribución de la Edad por región(df_insurance)")
+plt.xlabel("Región")
+plt.ylabel("Edad")
+plt.xticks(rotation=90)
+plt.show()
 
-#Write your code here for df_insurance
-
-""" *Graficar la región(Regiao) en función de la edad(Renda), del conjunto de datos `df_insurance`.*"""
-
-#Write your code here for df_insurance
 
 """## Preguntas
 * *¿Cuál es la distribución de datos sugerida?*
+Bloxplot es la distribución sugerida, la he aplicado porque hemos graficado edad y región.
+Nos permite detectar valores atípicos (outliers, mediana,ect..)
+
 * *¿Existen datos atípicos en el conjunto de datos?* *¿Cómo podrías corregir estos datos? Justifica tu respuesta*.
+Sí, es probable que existan datos atípicos(outliers) en el conjunto de datos, especialmente si ya hemos observado
+valores extremos en los bloxplots o violinplots. Los outliers son puntos que se alejan significativamente del resto
+de la distribución y pueden afectar tanto al análisis estadístico como el desmpeño de modelos de Machine Learning.
+Podemos corregir esto utilizando varias estrategias como eliminar outliers(si son errores claros o pocos puntos, se
+descartan los extremos) o sino Transformacion log/sqrt(sesgo fuerte en distribuciones, reduce el impacto de valores 
+grandes), etc...
 
 # **Pregunta 2 - Limpieza y tratamiento de Datos**
 
@@ -676,9 +944,22 @@ Para realizar el análisis de patrones anómalos, utilizarás la función `plot_
 
 ### Preguntas
 1. *¿Luego de la evaluación es necesario realizar alguna técnica para completar datos faltantes?*
+Sí, después de evaluar el dataset, si confirmamos que existen datos faltantes(NaN),
+normalmente sí es necesario aplicar una técnica para complementarlos pero la elección
+depende del tipo de dato y el problema que estemos resolviendo.
+
 2. *¿Debemos realizar tareas de imputación de valores luego de analizar los datos?*
+Debemos realizar tareas de imputación cuando tenemos suficientes valores perdidos como
+para afectar al modelo, cuando el patrón de ausencia no es aleatorio podría sesgar los 
+resultado o por último cuadno el modelo de ML no acepta NaNs, como por ejemplo, 
+la regresion lineal o el RandonForest.
 3. *¿Por favor, describe al menos dos técnicas de imputación de datos para valores faltantes basadas en métodos estadísticos?*
+
 4. *¿Por favor, describe al menos dos técnicas de imputación de datos para valores faltantes basadas en métodos predictivos?*
+Existen varias técnicas dependiendo si son variables numéricas, las recomendadas son: 
+la media(situación pocos Nans y distribución normal), mediana(pocos NaNs y distribución sesgada)
+Para las variables categóricas tenemos imputación por moda(variable con categoría dominante, 
+o rellenar con "desconocido" o "No reportado"(categoría desconocida aceptable).
 
 ## Eliminación de Duplicados
 
@@ -686,12 +967,15 @@ Para realizar el análisis de patrones anómalos, utilizarás la función `plot_
 
 *Vamos a eliminar los datos duplicados en todos los conjuntos de datos utilizando la función `drop_duplicates`, junto con el parámetro `inplace`.*
 """
-
 #Write your code here
+DataFrame.drop_duplicates(inplace=True)
 
 """## Pregunta
 
 *¿Por qué es importante llevar a cabo la tarea de eliminación de duplicados? Por favor, justifica tu respuesta.*
+Eliminar datos duplicados es una tarea fundamental en el proceso de limpieza de datos porque asegura que el 
+análisis y los modelos que construyas se basen en información correcta, sin repetir resgistros que distorsionen
+resultados.
 
 # Ingeniería de características
 
@@ -842,14 +1126,57 @@ class OutlierRemover(BaseEstimator, TransformerMixin):
 
 #Write your code here
 
+class Outlier_Remover = (BaseEstimator, TransformerMinxin):
+    def __init__(self, method= 'remove'):
+        """
+        method 'remover' -> elimina filas con outliers 
+               'winsorize' -> remplaza outliers por los límites
+        self.method = method
+        self.limits = {} #almacena límites por columna IQR
+    
+    def fit(self, X, y=None)
+        """
+        Calcula los limites inferior y superior para 
+    cada columna numérica.
+        """
+        num_cols =
+    X.select_dtypes(include['Number']).columns.tolist()
+        for col in num_cols:
+            Q1 = X[col].quantile(0.25)
+            Q3 = X[col].quantile(0.75)
+            IQR = Q3 - Q1
+            lower = Q1 - 1.5 * IQR
+            upper = Q3 + 1.5 * IQR
+            self.limits[col] = (lower, upper)
+        return self
+
+    def transform(self, X):
+        """
+        Aplica la eliminación o Winsorización de outliers.
+        X = X.copy()
+        for col, (lowe, upper) in self.limits.items():
+            if self.method == 'remove':
+                X = X[(X[col] >= lower) & (X[col] <= upper)]
+            elif self.method == 'winsorize':
+                    X[col] = np.where(X[col] < lower, lower, X[col])
+                    X[col] = np.where(X[col] > upper, upper, X[col])
+            else: 
+                 raise ValueError("method should be 'remove' or 'winsorize'")
+        return X
+        
 """## Pregunta
 Después de eliminar los datos atípicos, ¿cuántos registros tiene ahora el DataFrame `df_insurance`?
 """
 
 #Write your code here
+print("Cantidad de registros después de eliminar outliers:", len(df_insurance))
 
 """## Pregunta
 *Explica con tus propias palabras cómo podría afectar una diferencia significativa en el tamaño del conjunto de datos antes y después de eliminar los valores atípicos. ¿Qué implicaciones podría tener esto en los resultados de un modelo de machine learning?*
+Esto puede afectar en una significativa reducción de cantidad de datos, si eliminamos muchos registros al remover outliers tendremos menos datos menos información para aprender patrones , hay riesgo de perder información útil, impacto en metricas y evaluación, 
+etc.. En cuanto a las implicaciones en los resultados de Machine Learning pueden ser significativas. Los outliers pueden distorsionar los parametros de modelos como (regresión lineal, KNN, Redes neuronales.
+
+
 
 ## Gráficos luego de eliminar datos atípicos
 
