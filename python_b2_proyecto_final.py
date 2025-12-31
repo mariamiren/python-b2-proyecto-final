@@ -1415,6 +1415,13 @@ df_pca_components
 """## Pregunta
 *Compara las variables obtenidas después de realizar el PCA en el conjunto de datos con las variables identificadas a través de la matriz de confusión. ¿Has encontrado coincidencias entre las variables y qué conclusiones puedes extraer de esto?*
 
+
+
+
+PCA: Cada componente principal es una combinación lineal de variables originales y components_df muestra que variables tienen mas peso absoluto en cada componente.
+
+
+
 Vamos a graficar la curva conocida como codo (elbow curve) utilizando la función `plot_elbow_curve_pca`.
 """
 
@@ -1422,6 +1429,35 @@ plot_elbow_curve_pca(X_principal)
 
 """## Pregunta
 *Primero, investiga para qué sirve la curva conocida como codo (elbow curve). Luego, responde a la pregunta: ¿Cuántos componentes principales (columnas) puedes sugerir que sean utilizados por algún modelo de Machine Learning?*
+La curva del codo (Elbow Curve) es una herramienta gráfica utilizada principalmente
+para determinar el número óptimo de componentes o clusters en algoritmos de reducción 
+de dimensioanlidad o clustering, como PCA o K-Means.
+improt matplotlib.pylot as plt
+from sklearn.descomposition import PCA
+import numpy as np
+# tomamos X es tu matriz de caracteristicas
+#se recomienda escalar los datos
+from sklearn.preprocessing import StandartScaler
+X_scaled =
+StandardScaler().fit_transform(X)
+#Aplicar PCA
+pca = PCA()
+pca.fit(X_sclaed)
+#varianza explicada acumulada
+explained_variance =
+np.cumsum(pca.explained_variance_ratio)
+#graficar la curva del codo
+plt.figure(figsize(8.5))
+plt.plot(range(1, len(explained_variance) 
++ 1), explained_varianze, marker='o', linesstyle='--')
+plt.xlabel('Número de Componentes')
+plt.ylabel(Varianza Explicada Acumulada')
+plt.title('Curva del Codo - PCA')
+plt.grid(True)
+plt.show()
+#sugerir número de componentes (elegir el mínimo número que explique >= 90% de la varianza)
+n_components = np.argmax(explained_varianzr >= 0.90) + 1
+print(f"Sugerencia: utilizar {n_components} componentes principales") 
 
 *Establece el valor para la variable `n_components_pca`, luego ejecuta el modelo de aprendizaje, que incluye una tarea de reducción de la dimensionalidad mediante PCA (Análisis de Componentes Principales).*
 """
@@ -1468,6 +1504,25 @@ plot_confusion_matrix(confusion_matrix(y_test, y_pred),tipo_financiamiento_mappi
 """Interaction Terms:
 
 Create new features that capture the interactions between existing features. For instance, combining pairs of binary features using logical operations like AND, OR might uncover useful patterns.
+import pandas as pd
+#supongamos que tenemos un DataFrame con variables binarias
+# 0/1 o True/False
+df = pd.DataFrame({
+    'feature_A': [0, 1, 0, 1],
+    'feature_B': [1, 0, 1, 0],
+    'feature_C': [0, 0, 1, 1]
+})
+#crear nuevas características usando operaiones lógicasa
+df['A_AND_B'] = df[feature_A]&
+df[feature_B'] #AND
+df['A_OR_B'] = df[feature_A]|
+df[feature_B'] #OR
+df['A_AND_C'] = df[feature_A]& 
+df[feature_C'] 
+df['B_OR_C'] = df[feature_B]|
+df[feature_C'] 
+print(df)
+
 
 ## Implementación del tratamiento de datos desbalanceados
 """
@@ -1514,15 +1569,44 @@ pipeline_fix_imbalance.fit(X, y)
 X_reshaped, y_reshaped = pipeline_fix_imbalance.fit_resample(X, y)
 
 """*Implementa un gráfico tipo pie que muestre cómo lucen los datos después de realizar el tratamiento para abordar el desbalance.*"""
-
-#Write your code here
+import matplotlip pylot as plt
+#ejemplo distribución después del tratamiento contra el desbalance
+#simulación de conteo balanceado
+counts = {'Clase 0': 500, 'Clase 1': 500}
+labels = list(counts.keys())
+sizes = list(counts.values())
+plt.figure()
+plt.pie(sizes, labels=labels, 
+autopoct='%1.1f%%')
+plt.titlw('Distribución de clases despues del tratamiento de desbalance')
+plt.show()
 #conteo_tipo_financiamiento_label = y_reshaped.value_counts().rename(index=tipo_financiamiento_mapping)
 #conteo_tipo_financiamiento_label.plot.pie()
 #y_reshaped.value_counts()
 
 """*Separa los datos en conjuntos de entrenamiento y test utilizando la función `startified_train_test_split()`. Luego, implementa un modelo que haga uso del siguiente clasificador. Puedes probar modificando los hiperparámetros y evaluar los resultados. También puedes optar por modificar los parámetros de las clases `RandomUnderSampler` y `SMOTE` del paso anterior.*
-
-
+from sklearn model_selection import train test_split
+from sklearn.esemble import GradientBoostingClassifier
+from sklearn.metrics import accuracy_score, classification_report
+from imnlearn.under_sampling imporr RandomUnderSampler
+from imnlearn.over_sampling import SMOTE
+#separar datos con estratificación
+X_train, X_test, y_train, y_test= train_test_split(
+    X, y, 
+    test_size=0.2, 
+    random_size=42 
+    stratify=y
+#aplicar balanceo de clases
+#configurar randomsamples y smote
+rus=
+RandomUnderSampler(sampling_strategy=0.8, random_state=42)#mantiene 80% de la clase mayoritaria
+smote = SMOTE(sampling_strategy=0.5,
+random_state=42 #incrementa clase minoritaria al 50% de la mayor
+#primero undersampling
+X_res, y_res = rus.fit_resample(X_train, y_train)
+#luego oversampling
+X_res, y_res = smote.fit_resample(X_res, y_res)
+print("Distribución de clases despuées del balaneo:", dict(zip(*np.unique(y_res, return-counts=True))))
 ```
 GradientBoostingClassifier(
         ccp_alpha=0.0,
@@ -1552,9 +1636,17 @@ GradientBoostingClassifier(
 
 # Split the data into training and testing sets with stratification
 # Stratification ensures that the class distribution is preserved in both training and testing sets
-# Write your code here
-
-
+from sklearn.model_selection import train_test_split
+# X = features(variables independientes)
+# y = target/label(variable objetivo)
+X_train, X_test, y_train, y_test= train_test_split(
+    X, y, 
+    test_size=0.2, #se puede ajustar tamaño del set
+    random_size=42 #asegura reproducibilidad
+    stratify=y #mantiene la dsitribución de clases
+)
+print("Training set shape:", X_train.shape, y_train.shape)
+print("Testing set shape:", X_test.shape, y_test.shape)
 # Define the steps for the pipeline
 steps_gradient_boost = [
     ('sampling_under', rand_under),  # Undersampling
@@ -1583,13 +1675,45 @@ steps_gradient_boost = [
 ]
 
 # Create the pipeline for Gradient Boosting
-# Write your code here
+from sklearn.pipeline import Pipeline
+from sklearn.preprocessing import StandardScaler
+from sklearn.esemble import GrandientBoostingClassifier
+
+#create pipeline
+pipeline = Pipeline([
+    ('scaler', StandarScaler()),
+#optional: scale features
+    ('gb_model', GrandientBoostingClassifier(
+        n_estimators=200, 
+#number of boosting stages
+        learning_rate=0.1, 
+#step size shrinkage
+        max_depth=3,
+#max depth of each tree
+        random_state=42
+    ))
+])
+#train the pipeline on training data
+pipeline.fit(X_train, y_train)
+#evaluate
+train_accuracy = pipeline.score(X_train, y_train)
+test_accuracy = pipeline.score(X_test, y_test)
+
+print("Training Accuracy:", train_accuracy)
+print("Testing Accuracy:", test_accuracy)
 
 # Train the model using fit
-# Write your code here
+# entrenar el modelo pipeline con los datos de entrenamiento
+model.fit(X_train, y_train)
+
+print("¡El modelo ha sido entrenado con éxito!")
 
 # Make predictions
-# Write your code here
+# hacer predicciones sobre los datos de prueba
+
+y_pred = model.predict(X_test)
+print("Predicciones realizadas con éxito)
+print("Primeras 10 predicciones:", y_pred[:10])
 
 """Evaluemos los resultados del modelo."""
 
@@ -1601,9 +1725,79 @@ print(clas_report)
 plot_confusion_matrix(confusion_matrix(y_test, y_pred),tipo_financiamiento_mapping)
 
 """# Pregunta 4
-* *¿Cuál de los modelos consideras que es más eficiente en términos de rendimiento y por qué?*
-* *Luego de evaluar los diferentes modelos, como científico de datos, ¿cuál sugerirías implementar y por qué? Justifica tu respuesta.*
-* *Investiga qué otras opciones pueden ser utilizadas para enfrentar el problema de datos desbalanceados e implementa un ejemplo.*
-* *Investiga qué son los modelos de ensamble e implementa un corto ejemplo.*
 
+* *¿Cuál de los modelos consideras que es más eficiente en términos de rendimiento y por qué?*
+Random Forest tiene muy buen rendimiento con datasets con muchas variables y relaciones no lineales, sin embargo, 
+Gradient Boosting tiene un rendimiento aún mayor, especialmente en predicción precisa y datasets complejos.
+
+* *Luego de evaluar los diferentes modelos, como científico de datos, ¿cuál sugerirías implementar y por qué? Justifica tu respuesta.*
+Implementaría Gradiente Boosting ya que es un modelo que tiene un alto rendimiento predictivo. Tiene una myor precision para la mayoría
+de problemas de clasificación o regresión con datasets complejos y no lineales. Además aprende de los errores anteriores y permite
+un ajuste fino mediante hiperparámetros(learning_rate, n_estimators, max_depth).
+
+* *Investiga qué otras opciones pueden ser utilizadas para enfrentar el problema de datos desbalanceados e implementa un ejemplo.*
+Logistic Regression es otra de las opciones a utilizar, rápido y fácil de interpretar, es bueno si las relaciones son lineales.
+from sklearn.linear_model import LogisticRegression
+from sklearn.model_selection import traintest_split
+from sklearn.metrics improt accuracy_score, confusion_matrix, classification_report
+
+#split de datos con estratificación
+X_train, X_test, y_train, y_test = train_test_split(
+    X, y , test_size=0.2, random_state=42, stratify=y
+)
+
+#crear modelo de regresión logística 
+log=model = LogisticRegression(
+    solver='liblinear', #bueno para dataset pequeños
+    penalty='12', #regularización L2
+    c=1.0, #inverso de fuerza de regularización
+    random_state=42
+)
+#entrenar el modelo
+log_model.fit(X_train, y_train)
+#hacer predicciones
+y_pred = log_model.predict(X_test)
+#evaluar el modelo
+accuracy = accuracy-score(y_test, y_pred)
+conf_matrix = confusion_matriz(y_test, y_pred)
+report = classification_report(y_test, y_pred)
+
+print("Accuracy del modelo:", accuracy)
+print("n\Matriz de Confusión:\n", conf_matrix)
+print("\nReporte de Clasificación: \n", report)
+* *Investiga qué son los modelos de ensamble e implementa un corto ejemplo.*
 """
+Los modelos esamble cominan múltiples predictores y suelen mejorar el rendimiento general.
+Tienen menos riesgo de sobreajuste cuando se usan correctamente y es muy flexible.
+from sklearn.linear_model import LogisticRegression
+from sklearn.tree import DecisioTreeClassifier
+from sklearn.esemble import RandomForestClassifier, VotingClassifier
+from sklearn.model_selection import traintest_split
+from sklearn.metrics improt accuracy_score
+
+#split de datos con estratificación
+X_train, X_test, y_train, y_test = train_test_split(
+    X, y , test_size=0.2, random_state=42, stratify=y
+)
+
+#Definir los modelos base
+log_clf =
+LogisticRegression(solver='liblinear')
+tree_clf=
+DecisionTreeClassifier(max_depth=4, random_state=42)
+rf_clf =
+RadomForestClassifier(n_estimators=100, random_state=42)
+
+#crear el modelo de esamble(votación)
+voting_clf = VotingClassifier)
+    estimators=[('lr', log_clf), ('dt', tree_clf), ('rf', rf_clf)],
+    voting='soft' #'soft' usa probablidades , 'hard' ida voto por mayoría
+
+#entrenar el esamble
+voting_clf.fit(X_train, y _train)
+
+#hacer predicciones y evaluar
+y_pred = voting_clf.predict(X_test)
+accuracy = accuracy_score(y_test, y_pred)
+
+print("Accuracy del model de esamble:", accuray)
